@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Михайло Димчогло — Ubuntu Desktop Portfolio</title>
+    <!-- Подключаем Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Шрифты Ubuntu и Ubuntu Mono для аутентичности -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400&family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome для системных иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Ubuntu', 'sans-serif'],
+                        mono: ['Ubuntu Mono', 'monospace'],
+                    },
+                    colors: {
+                        ubuntu: {
+                            orange: '#E95420',
+                            aubergine: '#77216F',
+                            darkAubergine: '#2C001E',
+                            midAubergine: '#5E2750',
+                            warmGrey: '#AEA79F',
+                            windowBg: '#2C2C2C',
+                            headerBg: '#222222',
+                            terminalBg: '#300A24',
+                            border: '#191919'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans text-gray-100 antialiased selection:bg-[#E95420] selection:text-white overflow-x-hidden min-h-screen flex flex-col bg-gradient-to-br from-[#2C001E] via-[#77216F] to-[#E95420]">
+
+    <!-- Фоновый декоративный элемент в стиле обоев Ubuntu (Jammy Jellyfish / Noble Numbat) -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-[#E95420]/25 blur-3xl"></div>
+        <div class="absolute top-1/3 left-1/4 w-[32rem] h-[32rem] rounded-full bg-[#77216F]/40 blur-3xl"></div>
+        <div class="absolute -bottom-32 right-1/3 w-[28rem] h-[28rem] rounded-full bg-[#2C001E]/70 blur-3xl"></div>
+    </div>
+
+    <!-- ВЕРХНЯЯ ПАНЕЛЬ UBUNTU (GNOME TOP BAR) -->
+    <header class="sticky top-0 z-50 h-8 bg-[#131313]/95 backdrop-blur-md border-b border-black/60 px-3 flex items-center justify-between text-xs font-medium select-none shadow-md">
+        <!-- Левая часть: Обзор и активное приложение -->
+        <div class="flex items-center space-x-3">
+            <button onclick="showToast('Режим обзора Ubuntu: все окна открыты перед вами!')" class="flex items-center space-x-1.5 px-2 py-0.5 rounded hover:bg-white/10 transition cursor-pointer">
+                <span class="w-2 h-2 rounded-full bg-[#E95420]"></span>
+                <span>Обзор</span>
+            </button>
+            <div class="hidden sm:flex items-center space-x-1.5 text-gray-300 px-2 py-0.5 rounded bg-white/5">
+                <i class="fa-solid fa-terminal text-[#E95420]"></i>
+                <span id="active-app-label">mykhailo@ubuntu: ~/portfolio</span>
+            </div>
+        </div>
+
+        <!-- Центр: Системные часы и дата -->
+        <div id="ubuntu-clock" class="px-3 py-0.5 rounded hover:bg-white/10 transition cursor-default font-medium tracking-wide">
+            17 нояб. 18:26
+        </div>
+
+        <!-- Правая часть: Системный трей -->
+        <div class="flex items-center space-x-3 px-2 py-0.5 rounded hover:bg-white/10 transition cursor-pointer" onclick="showToast('Система: Ubuntu 24.04 LTS | Ментор онлайн и готов к занятиям')">
+            <span class="hidden md:inline text-[11px] text-emerald-400 flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Online
+            </span>
+            <i class="fa-solid fa-wifi text-gray-300"></i>
+            <i class="fa-solid fa-volume-high text-gray-300"></i>
+            <i class="fa-solid fa-battery-full text-gray-300"></i>
+            <i class="fa-solid fa-caret-down text-gray-400 text-[10px]"></i>
+        </div>
+    </header>
+
+    <!-- ОСНОВНОЕ РАБОЧЕЕ ПРОСТРАНСТВО (DOCK + DESKTOP WINDOWS) -->
+    <div class="relative z-10 flex-1 flex flex-col md:flex-row">
+        
+        <!-- ЛЕВАЯ ПАНЕЛЬ ЗАПУСКА (UBUNTU DOCK) -->
+        <aside class="md:w-16 w-full md:min-h-[calc(100vh-2rem)] bg-[#181818]/85 backdrop-blur-md border-b md:border-b-0 md:border-r border-black/50 flex md:flex-col items-center justify-between md:justify-start py-2 md:py-3 px-3 md:px-0 gap-2 md:gap-3 z-40 shrink-0">
+            <div class="flex md:flex-col items-center gap-2 sm:gap-3 overflow-x-auto w-full md:w-auto justify-center md:justify-start">
+                
+                <!-- Иконка 1: Профиль / О себе -->
+                <button onclick="scrollToSection('profile-window', 'О себе — Михайло Димчогло')" title="О себе (Профиль)" class="group relative p-2.5 rounded-xl bg-white/10 hover:bg-white/20 transition-all flex items-center justify-center">
+                    <span class="hidden md:block absolute left-0 w-1 h-5 bg-[#E95420] rounded-r"></span>
+                    <i class="fa-solid fa-user-astronaut text-xl text-orange-400 group-hover:scale-110 transition-transform"></i>
+                </button>
+
+                <!-- Иконка 2: Терминал -->
+                <button onclick="scrollToSection('terminal-window', 'Терминал — bash')" title="Интерактивный Терминал" class="group relative p-2.5 rounded-xl hover:bg-white/15 transition-all flex items-center justify-center">
+                    <span class="hidden md:block absolute left-0 w-1 h-1.5 bg-[#E95420] rounded-r"></span>
+                    <div class="w-7 h-7 rounded-lg bg-[#300A24] border border-gray-600 flex items-center justify-center text-xs font-mono font-bold text-white group-hover:scale-110 transition-transform">
+                        &gt;_
+                    </div>
+                </button>
+
+                <!-- Иконка 3: Навыки и курсы -->
+                <button onclick="scrollToSection('skills-window', 'Стек и обучение')" title="Чему я учу" class="group relative p-2.5 rounded-xl hover:bg-white/15 transition-all flex items-center justify-center">
+                    <i class="fa-solid fa-code text-xl text-sky-400 group-hover:scale-110 transition-transform"></i>
+                </button>
+
+                <!-- Иконка 4: Telegram (Прямая связь) -->
+                <a id="dock-tg-link" href="https://t.me/Dimchoglo_Misha" target="_blank" rel="noopener noreferrer" title="Написать в Telegram (@Dimchoglo_Misha)" class="group relative p-2.5 rounded-xl bg-[#229ED9]/20 hover:bg-[#229ED9]/35 border border-[#229ED9]/40 transition-all flex items-center justify-center">
+                    <i class="fa-brands fa-telegram text-xl text-[#29B6F6] group-hover:scale-110 transition-transform"></i>
+                </a>
+            </div>
+
+            <!-- Кнопка "Показать приложения" внизу дока (на десктопе) -->
+            <div class="hidden md:flex mt-auto pt-3 border-t border-white/10">
+                <button onclick="runCommand('neofetch')" title="Запустить neofetch" class="p-2.5 rounded-xl hover:bg-white/15 transition text-gray-300 hover:text-white">
+                    <i class="fa-solid fa-grip text-xl"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- СЕТКА ОКОН НА РАБОЧЕМ СТОЛЕ -->
+        <main class="flex-1 p-3 sm:p-6 lg:p-8 max-w-6xl mx-auto w-full space-y-6">
+
+            <!-- ОКНО 1: ПРОФИЛЬ УЧИТЕЛЯ + ИСТОРИЯ (GTK / YARU WINDOW) -->
+            <section id="profile-window" class="rounded-xl overflow-hidden shadow-2xl border border-black/70 bg-[#2C2C2C]/95 backdrop-blur-md transition-all">
+                <!-- Заголовок окна Ubuntu -->
+                <div class="h-10 bg-[#202020] border-b border-black/60 px-4 flex items-center justify-between select-none">
+                    <div class="flex items-center space-x-2 text-xs sm:text-sm font-medium text-gray-200">
+                        <i class="fa-brands fa-ubuntu text-[#E95420] text-base"></i>
+                        <span>О преподавателе — /home/mykhailo/README.md</span>
+                    </div>
+                    <!-- Кнопки управления окном (Свернуть, Развернуть, Закрыть) -->
+                    <div class="flex items-center space-x-2">
+                        <button onclick="showToast('Окно закреплено на рабочем столе')" class="w-3.5 h-3.5 rounded-full bg-[#3D3D3D] hover:bg-gray-500 flex items-center justify-center text-[9px] text-gray-200 transition">_</button>
+                        <button onclick="showToast('Окно уже в оптимальном размере')" class="w-3.5 h-3.5 rounded-full bg-[#3D3D3D] hover:bg-gray-500 flex items-center justify-center text-[8px] text-gray-200 transition">□</button>
+                        <button onclick="showToast('Нельзя просто так закрыть хорошего наставника 😉')" class="w-3.5 h-3.5 rounded-full bg-[#E95420] hover:bg-orange-500 flex items-center justify-center text-[9px] text-white font-bold transition">×</button>
+                    </div>
+                </div>
+
+                <!-- Содержимое окна профиля -->
+                <div class="p-5 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center">
+                    
+                    <!-- Левая колонка: Крупная фотокарточка с фокусом на лице и возможностью загрузки -->
+                    <div class="lg:col-span-4 flex flex-col items-center">
+                        <div onclick="document.getElementById('photo-upload-input').click()" title="Нажмите, чтобы загрузить или обновить фото" class="cursor-pointer relative group w-60 h-64 sm:w-72 sm:h-76 rounded-2xl p-1.5 bg-gradient-to-tr from-[#E95420] via-[#77216F] to-amber-500 shadow-2xl shadow-[#E95420]/20 transition-transform duration-300 hover:scale-[1.02]">
+                            <div class="w-full h-full rounded-xl overflow-hidden bg-[#1E1E1E] relative">
+                                <!-- Скрытый input для мгновенной подгрузки фото в предпросмотре -->
+                                <input id="photo-upload-input" type="file" accept="image/*" class="hidden" onchange="handlePhotoUpload(event)">
+
+                                <!-- 
+                                    Фокус кадра выставлен на лицо: object-position: 56% 24%
+                                    Пробуем загрузить 5181741982815030535_2.jpg, затем 5181741982815030535.jpg, 
+                                    а при отсутствии локального файла в песочнице показываем стилизованный портретный SVG-аватар.
+                                -->
+                                <img 
+                                    id="profile-photo-img"
+                                    src="5181741982815030535_2.jpg" 
+                                    alt="Михайло Димчогло — Учитель программирования" 
+                                    style="object-fit: cover; object-position: 56% 24%;"
+                                    class="w-full h-full transition-transform duration-500 group-hover:scale-105"
+                                    onerror="handlePhotoFallback(this)"
+                                >
+
+                                <!-- Кнопка-бейдж камеры в правом верхнем углу для быстрой замены фото -->
+                                <div class="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-black/75 hover:bg-[#E95420] backdrop-blur-md border border-white/15 text-[11px] text-white flex items-center gap-1.5 transition shadow-md">
+                                    <i class="fa-solid fa-camera text-orange-300 group-hover:text-white"></i>
+                                    <span>Сменить фото</span>
+                                </div>
+
+                                <!-- Нижний системный бейдж поверх фото -->
+                                <div class="absolute bottom-2.5 left-2.5 right-2.5 bg-black/80 backdrop-blur-md border border-white/10 rounded-lg px-3 py-1.5 flex items-center justify-between text-xs">
+                                    <span class="font-mono text-emerald-400">uid=1000(mykhailo)</span>
+                                    <span class="text-gray-300">Ubuntu LTS</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Быстрые теги под фото -->
+                        <div class="mt-4 flex flex-wrap justify-center gap-2 text-xs font-mono">
+                            <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-orange-300">15 лет в коде</span>
+                            <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-purple-300">Без душной теории</span>
+                        </div>
+                    </div>
+
+                    <!-- Правая колонка: Имя, фамилия, честная история и кнопки связи -->
+                    <div class="lg:col-span-8 space-y-4">
+                        <div>
+                            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#E95420]/15 border border-[#E95420]/40 text-[#ff875e] text-xs font-medium mb-2">
+                                <i class="fa-solid fa-terminal"></i>
+                                <span>Учитель программирования &amp; Ментор</span>
+                            </div>
+                            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
+                                Михайло Димчогло
+                            </h1>
+                            <p class="text-sm sm:text-base text-gray-400 font-mono mt-1">
+                                root@mentor-box:~$ <span class="text-emerald-400">./teach_programming --no-boring-stuff</span>
+                            </p>
+                        </div>
+
+                        <!-- Оригинальная, самоироничная история без клише "я самый лучший" -->
+                        <div class="bg-[#222222]/90 border border-white/10 rounded-xl p-4 sm:p-5 space-y-3 text-gray-200 text-sm sm:text-base leading-relaxed">
+                            <p>
+                                Привет! Давай сразу без пафоса и сказок в духе <span class="italic text-gray-400">«я самый лучший учитель во Вселенной, научу сеньорить за два дня»</span>. Не научу за два дня — но научу думать головой и писать код, за который не стыдно.
+                            </p>
+                            <p>
+                                Своё здоровье и молодость я отдал... <span class="line-through text-gray-500">спирту</span> <span class="text-[#E95420] font-semibold">спорту!</span> А точнее — <strong class="text-white">15-летнему марафону в программировании</strong>. За эти 15 лет были тысячи строк кода, ночные дебаги, сломанные продакшены, поднятые с нуля серверы на Linux и сотни моментов «Эврика!», когда сложная задача наконец складывается как пазл.
+                            </p>
+                            <p>
+                                Моя задача как преподавателя — перевести с «птичьего» языка документации на нормальный человеческий. Объясняю так, чтобы ты понял <span class="underline decoration-[#E95420] decoration-2 underline-offset-4">как это работает внутри</span>, а не просто зазубрил синтаксис.
+                            </p>
+                        </div>
+
+                        <!-- Блок кнопок: Главная CTA в Telegram + Копирование ника -->
+                        <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                            <a id="main-tg-btn" href="https://t.me/Dimchoglo_Misha" target="_blank" rel="noopener noreferrer" 
+                               class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-3 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#229ED9] to-[#1d88bc] hover:from-[#29aae6] hover:to-[#229ED9] text-white font-semibold shadow-lg shadow-[#229ED9]/25 transition-all transform hover:-translate-y-0.5 cursor-pointer">
+                                <i class="fa-brands fa-telegram text-2xl"></i>
+                                <div class="text-left">
+                                    <div class="text-sm font-bold leading-tight">Написать в Telegram</div>
+                                    <div id="tg-handle-subtitle" class="text-[11px] text-sky-100 font-mono">@Dimchoglo_Misha</div>
+                                </div>
+                            </a>
+
+                            <button onclick="copyTgHandle()" class="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-gray-200 text-sm font-medium transition cursor-pointer">
+                                <i class="fa-regular fa-copy"></i>
+                                <span>Скопировать @Dimchoglo_Misha</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ВТОРОЙ РЯД: ИНТЕРАКТИВНЫЙ ТЕРМИНАЛ UBUNTU + КАРТОЧКА НАВЫКОВ -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- ОКНО 2: ИНТЕРАКТИВНЫЙ ТЕРМИНАЛ UBUNTU (7 колонок) -->
+                <section id="terminal-window" class="lg:col-span-7 rounded-xl overflow-hidden shadow-2xl border border-black/80 bg-[#300A24]/95 backdrop-blur-md flex flex-col">
+                    <!-- Заголовок окна терминала -->
+                    <div class="h-10 bg-[#202020] border-b border-black/60 px-4 flex items-center justify-between select-none">
+                        <div class="flex items-center space-x-2 text-xs sm:text-sm font-medium text-gray-200">
+                            <span class="font-mono text-[#E95420] font-bold">&gt;_</span>
+                            <span>mykhailo@ubuntu: ~ (bash)</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="clearTerminal()" class="text-[11px] px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 text-gray-300 transition">clear</button>
+                            <span class="w-3.5 h-3.5 rounded-full bg-[#E95420] inline-block"></span>
+                        </div>
+                    </div>
+
+                    <!-- Панель быстрых команд (для удобного клика с телефона и ПК) -->
+                    <div class="bg-[#24071B] px-3 py-2 border-b border-white/10 flex flex-wrap gap-1.5 items-center text-xs font-mono">
+                        <span class="text-gray-400 mr-1">Команды:</span>
+                        <button onclick="runCommand('neofetch')" class="px-2 py-1 rounded bg-white/10 hover:bg-[#E95420] text-gray-200 hover:text-white transition cursor-pointer">neofetch</button>
+                        <button onclick="runCommand('whoami')" class="px-2 py-1 rounded bg-white/10 hover:bg-[#E95420] text-gray-200 hover:text-white transition cursor-pointer">whoami</button>
+                        <button onclick="runCommand('history')" class="px-2 py-1 rounded bg-white/10 hover:bg-[#E95420] text-gray-200 hover:text-white transition cursor-pointer">cat 15_years.log</button>
+                        <button onclick="runCommand('skills')" class="px-2 py-1 rounded bg-white/10 hover:bg-[#E95420] text-gray-200 hover:text-white transition cursor-pointer">ls ./skills</button>
+                        <button onclick="runCommand('telegram')" class="px-2 py-1 rounded bg-[#229ED9]/30 hover:bg-[#229ED9] text-sky-200 hover:text-white transition cursor-pointer">./telegram.sh</button>
+                    </div>
+
+                    <!-- Вывод терминала -->
+                    <div id="terminal-output" class="p-4 font-mono text-xs sm:text-sm space-y-3 h-80 overflow-y-auto scroll-smooth">
+                        <!-- Начальный вывод neofetch -->
+                    </div>
+
+                    <!-- Поле ввода команды -->
+                    <form onsubmit="handleTerminalSubmit(event)" class="bg-[#24071B] border-t border-white/10 px-4 py-2.5 flex items-center font-mono text-xs sm:text-sm">
+                        <span class="text-emerald-400 font-bold mr-1">mykhailo@ubuntu</span><span class="text-white">:</span><span class="text-sky-400 font-bold mx-1">~</span><span class="text-white mr-2">$</span>
+                        <input 
+                            id="terminal-input" 
+                            type="text" 
+                            placeholder="Введите help, neofetch или telegram..." 
+                            autocomplete="off"
+                            class="bg-transparent border-none outline-none text-white flex-1 placeholder-gray-500"
+                        >
+                        <button type="submit" class="ml-2 px-2.5 py-1 rounded bg-[#E95420] hover:bg-orange-600 text-white text-xs font-sans font-medium transition">
+                            Enter
+                        </button>
+                    </form>
+                </section>
+
+                <!-- ОКНО 3: ЧЕМУ УЧУ И КАК ПРОХОДЯТ ЗАНЯТИЯ (5 колонок) -->
+                <section id="skills-window" class="lg:col-span-5 rounded-xl overflow-hidden shadow-2xl border border-black/70 bg-[#2C2C2C]/95 backdrop-blur-md flex flex-col">
+                    <!-- Заголовок окна -->
+                    <div class="h-10 bg-[#202020] border-b border-black/60 px-4 flex items-center justify-between select-none">
+                        <div class="flex items-center space-x-2 text-xs sm:text-sm font-medium text-gray-200">
+                            <i class="fa-solid fa-folder-open text-[#E95420]"></i>
+                            <span>Направления обучения</span>
+                        </div>
+                        <span class="w-3.5 h-3.5 rounded-full bg-[#E95420] inline-block"></span>
+                    </div>
+
+                    <!-- Список направлений -->
+                    <div class="p-5 space-y-3.5 flex-1 flex flex-col justify-between">
+                        <div class="space-y-3">
+                            <div class="p-3 rounded-xl bg-[#222222] border border-white/5 hover:border-[#E95420]/50 transition">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="font-bold text-sm text-white flex items-center gap-2">
+                                        <i class="fa-brands fa-python text-yellow-400"></i> Python &amp; Алгоритмы
+                                    </span>
+                                    <span class="text-[11px] font-mono text-gray-400">с нуля до ботов</span>
+                                </div>
+                                <p class="text-xs text-gray-300 leading-relaxed">
+                                    От первой переменной до Telegram-ботов, парсеров, работы с API и понимания структур данных.
+                                </p>
+                            </div>
+
+                            <div class="p-3 rounded-xl bg-[#222222] border border-white/5 hover:border-[#E95420]/50 transition">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="font-bold text-sm text-white flex items-center gap-2">
+                                        <i class="fa-brands fa-js text-amber-300"></i> Web: HTML, CSS, JS
+                                    </span>
+                                    <span class="text-[11px] font-mono text-gray-400">живой фронтенд</span>
+                                </div>
+                                <p class="text-xs text-gray-300 leading-relaxed">
+                                    Создание современных сайтов, логика на JavaScript, работа с DOM и реальные пет-проекты в портфолио.
+                                </p>
+                            </div>
+
+                            <div class="p-3 rounded-xl bg-[#222222] border border-white/5 hover:border-[#E95420]/50 transition">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="font-bold text-sm text-white flex items-center gap-2">
+                                        <i class="fa-brands fa-linux text-[#E95420]"></i> Linux, Git &amp; База CS
+                                    </span>
+                                    <span class="text-[11px] font-mono text-gray-400">инженерный подход</span>
+                                </div>
+                                <p class="text-xs text-gray-300 leading-relaxed">
+                                    Учимся не бояться чёрного экрана терминала: Ubuntu, Bash, Git, сети и архитектура программ.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Нижний призыв внутри карточки -->
+                        <div class="pt-2 border-t border-white/10 flex items-center justify-between text-xs text-gray-300">
+                            <span>Индивидуально и в мини-группах</span>
+                            <a id="card-tg-link" href="https://t.me/Dimchoglo_Misha" target="_blank" rel="noopener noreferrer" class="text-[#29B6F6] hover:underline font-semibold flex items-center gap-1">
+                                Обсудить старт <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ВСПЛЫВАЮЩЕЕ УВЕДОМЛЕНИЕ В СТИЛЕ UBUNTU OSD (ВМЕСТО ALERT) -->
+    <div id="ubuntu-toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-[#1C1C1C]/95 backdrop-blur-md border border-white/15 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center space-x-3 text-xs sm:text-sm max-w-sm">
+            <i class="fa-brands fa-ubuntu text-[#E95420] text-lg shrink-0"></i>
+            <span id="ubuntu-toast-text">Уведомление системы</span>
+        </div>
+    </div>
+
+    <script>
+        // Актуальный ник в Telegram
+        const TG_USERNAME = 'Dimchoglo_Misha';
+
+        // Каскадный fallback для фото + генерация аккуратного SVG-аватара, если локальный файл не прикреплён в песочнице
+        let photoFallbackStep = 0;
+        function handlePhotoFallback(imgEl) {
+            photoFallbackStep++;
+            if (photoFallbackStep === 1) {
+                imgEl.src = '5181741982815030535.jpg';
+                return;
+            }
+            imgEl.onerror = null;
+            // Рисуем стилизованный портретный аватар в палитре Ubuntu через SVG
+            const svgAvatar = `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 420" width="400" height="420">
+                    <defs>
+                        <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#2C001E"/>
+                            <stop offset="55%" stop-color="#5E2750"/>
+                            <stop offset="100%" stop-color="#E95420"/>
+                        </linearGradient>
+                    </defs>
+                    <rect width="400" height="420" fill="url(#bg)"/>
+                    <circle cx="200" cy="145" r="64" fill="#F3D2C1"/>
+                    <path d="M136 138 C136 82, 264 82, 264 138 C258 106, 142 106, 136 138 Z" fill="#5C3A21"/>
+                    <path d="M88 370 C95 275, 145 245, 200 245 C255 245, 305 275, 312 370 Z" fill="#1E1E1E"/>
+                    <text x="200" y="325" font-family="Ubuntu, sans-serif" font-size="16" font-weight="bold" fill="#FFFFFF" text-anchor="middle">Михайло Димчогло</text>
+                    <text x="200" y="348" font-family="monospace" font-size="12" fill="#FFAD8F" text-anchor="middle">Нажмите, чтобы выбрать фото</text>
+                </svg>
+            `.trim();
+            imgEl.src = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svgAvatar);
+            imgEl.style.objectPosition = '50% 35%';
+        }
+
+        // Загрузка фото напрямую с устройства пользователя (работает даже в изолированном Preview)
+        function handlePhotoUpload(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imgEl = document.getElementById('profile-photo-img');
+                if (imgEl && e.target && e.target.result) {
+                    imgEl.onerror = null;
+                    imgEl.src = e.target.result;
+                    imgEl.style.objectFit = 'cover';
+                    imgEl.style.objectPosition = '56% 24%';
+                    showToast('Фото успешно загружено и сфокусировано по лицу!');
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Обновление системных часов Ubuntu в верхней панели
+        function updateClock() {
+            const now = new Date();
+            const months = ['янв.', 'февр.', 'мар.', 'апр.', 'мая', 'июн.', 'июл.', 'авг.', 'сент.', 'окт.', 'нояб.', 'дек.'];
+            const day = now.getDate();
+            const month = months[now.getMonth()];
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const clockEl = document.getElementById('ubuntu-clock');
+            if (clockEl) {
+                clockEl.textContent = `${day} ${month} ${hours}:${minutes}`;
+            }
+        }
+
+        // Всплывающее системное уведомление Ubuntu
+        let toastTimeout;
+        function showToast(message) {
+            const toast = document.getElementById('ubuntu-toast');
+            const toastText = document.getElementById('ubuntu-toast-text');
+            if (!toast || !toastText) return;
+
+            toastText.textContent = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 3200);
+        }
+
+        // Плавный скролл к нужному окну
+        function scrollToSection(elementId, appTitle) {
+            const el = document.getElementById(elementId);
+            const label = document.getElementById('active-app-label');
+            if (label && appTitle) label.textContent = appTitle;
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        // Копирование ника Telegram в буфер обмена (через execCommand для совместимости с iframe)
+        function copyTgHandle() {
+            const handle = `@${TG_USERNAME}`;
+            const tempInput = document.createElement('input');
+            tempInput.value = handle;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            try {
+                document.execCommand('copy');
+                showToast(`Скопировано в буфер обмена: ${handle}`);
+            } catch (err) {
+                showToast(`Мой Telegram: ${handle}`);
+            }
+            document.body.removeChild(tempInput);
+        }
+
+        // Логика интерактивного терминала Ubuntu
+        const terminalOutput = document.getElementById('terminal-output');
+
+        function appendTerminalBlock(commandText, htmlResponse) {
+            const block = document.createElement('div');
+            block.className = 'space-y-1';
+            block.innerHTML = `
+                <div class="flex items-center flex-wrap">
+                    <span class="text-emerald-400 font-bold">mykhailo@ubuntu</span><span class="text-white">:</span><span class="text-sky-400 font-bold">~</span><span class="text-white mr-2">$</span>
+                    <span class="text-gray-100">${escapeHtml(commandText)}</span>
+                </div>
+                <div class="text-gray-300 pl-0 sm:pl-2 leading-relaxed">${htmlResponse}</div>
+            `;
+            terminalOutput.appendChild(block);
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function clearTerminal() {
+            if (terminalOutput) terminalOutput.innerHTML = '';
+        }
+
+        function runCommand(cmdRaw) {
+            const cmd = cmdRaw.trim().toLowerCase();
+            if (!cmd) return;
+
+            if (cmd === 'clear') {
+                clearTerminal();
+                return;
+            }
+
+            let response = '';
+
+            switch (cmd) {
+                case 'neofetch':
+                    response = `
+                        <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 bg-black/25 p-3 rounded-lg border border-white/10 mt-1">
+                            <pre class="sm:col-span-5 text-[#E95420] font-bold text-[10px] sm:text-xs leading-tight select-none">
+            .-/+oossssoo+/-.
+        \`:+ssssssssssssssssss+:\`
+      -+ssssssssssssssssssyyssss+-
+    .ossssssssssssssssssdMMMNysssso.
+   /ssssssssssshdmmNNmmyNMMMMhssssss/
+  +ssssssssshmydMMMMMMMNddddyssssssss+
+ /sssssssshNMMMyhhyyyyhmNMMMNhssssssss/
+.ssssssssdMMMNhsssssssssshNMMMdssssssss.
++sssshhhyNMMNyssssssssssssyNMMMysssssss+
+ossyNMMMNyMMhsssssssssssssshmmmhssssssso
++sssshhhyNMMNyssssssssssssyNMMMysssssss+
+.ssssssssdMMMNhsssssssssshNMMMdssssssss.
+ /sssssssshNMMMyhhyyyyhdNMMMNhssssssss/
+  +sssssssssdmydMMMMMMMMddddyssssssss+
+   /ssssssssssshdmNNNNmyNMMMMhssssss/
+    .ossssssssssssssssssdMMMNysssso.
+      -+sssssssssssssssssyyyssss+-
+        \`:+ssssssssssssssssss+:\`
+            .-/+oossssoo+/-.
+                            </pre>
+                            <div class="sm:col-span-7 text-xs space-y-1">
+                                <div><span class="text-[#E95420] font-bold">mykhailo</span>@<span class="text-[#E95420] font-bold">ubuntu-mentor</span></div>
+                                <div class="text-gray-500">------------------------</div>
+                                <div><span class="text-orange-300 font-bold">Имя:</span> Михайло Димчогло</div>
+                                <div><span class="text-orange-300 font-bold">Роль:</span> Учитель программирования</div>
+                                <div><span class="text-orange-300 font-bold">Uptime:</span> 15 лет в разработке</div>
+                                <div><span class="text-orange-300 font-bold">Shell:</span> bash / python / js</div>
+                                <div><span class="text-orange-300 font-bold">Топливо:</span> Кофе и спорт (не спирт!)</div>
+                                <div><span class="text-orange-300 font-bold">Telegram:</span> <a href="https://t.me/${TG_USERNAME}" target="_blank" rel="noopener noreferrer" class="text-sky-400 underline">@${TG_USERNAME}</a></div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'whoami':
+                    response = `<span class="text-emerald-300">Михайло Димчогло</span> — разработчик и преподаватель с 15-летним стажем. Не обещаю волшебную таблетку, но гарантирую понятные объяснения и практику с первого занятия. Связь: <a href="https://t.me/${TG_USERNAME}" target="_blank" rel="noopener noreferrer" class="text-sky-400 underline">@${TG_USERNAME}</a>`;
+                    break;
+
+                case 'history':
+                case 'cat 15_years.log':
+                    response = `
+                        <div class="space-y-1 text-xs">
+                            <p><span class="text-amber-400">[2011]</span> Первые строки кода, бессонные ночи и восторг от того, что программа вообще запустилась.</p>
+                            <p><span class="text-amber-400">[2016]</span> Переход на Linux, погружение в веб, Python, архитектуру и реальные боевые проекты.</p>
+                            <p><span class="text-amber-400">[2021]</span> Понял, что объяснять сложные вещи простыми словами получается не хуже, чем писать код.</p>
+                            <p><span class="text-emerald-400">[2026]</span> 15 лет в строю. Помогаю ученикам войти в IT осознанно, уверенно и без каши в голове.</p>
+                        </div>
+                    `;
+                    break;
+
+                case 'skills':
+                case 'ls ./skills':
+                    response = `
+                        <div class="flex flex-wrap gap-2 pt-1">
+                            <span class="text-sky-400">python3/</span>
+                            <span class="text-sky-400">javascript_es6/</span>
+                            <span class="text-sky-400">html5_css3/</span>
+                            <span class="text-emerald-400">ubuntu_linux.sh*</span>
+                            <span class="text-emerald-400">git_workflow.sh*</span>
+                            <span class="text-amber-300">algorithms.md</span>
+                            <span class="text-amber-300">mentoring.txt</span>
+                        </div>
+                    `;
+                    break;
+
+                case 'telegram':
+                case './telegram.sh':
+                    response = `Открываю прямой канал связи с Михайло: <a href="https://t.me/${TG_USERNAME}" target="_blank" rel="noopener noreferrer" class="inline-block mt-1 px-3 py-1 rounded bg-[#229ED9] text-white font-bold hover:bg-sky-500 transition">Перейти в Telegram (@${TG_USERNAME}) &rarr;</a>`;
+                    break;
+
+                case 'help':
+                    response = `Доступные команды: <span class="text-orange-300">neofetch</span>, <span class="text-orange-300">whoami</span>, <span class="text-orange-300">history</span>, <span class="text-orange-300">skills</span>, <span class="text-orange-300">telegram</span>, <span class="text-orange-300">clear</span>.`;
+                    break;
+
+                default:
+                    response = `<span class="text-rose-400">bash: ${escapeHtml(cmd)}: команда не найдена.</span> Введите <span class="text-orange-300">help</span> для списка команд или напишите мне в Telegram.`;
+            }
+
+            appendTerminalBlock(cmdRaw, response);
+        }
+
+        function handleTerminalSubmit(event) {
+            event.preventDefault();
+            const input = document.getElementById('terminal-input');
+            if (!input) return;
+            const val = input.value;
+            input.value = '';
+            runCommand(val);
+        }
+
+        // Инициализация при загрузке страницы
+        window.onload = function () {
+            updateClock();
+            setInterval(updateClock, 15000);
+            runCommand('neofetch');
+        };
+    </script>
+</body>
+</html>
